@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const { User } = require('../lib/db-connection');
+const { User } = require('../models/user');
 
 router.use(bodyParser.json());
 

@@ -5,7 +5,7 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
-const router = require("./routes/router");
+const router = require("./routes/routerdb");
 const userrouter=require("./routes/routerdb");
 app.use("/router", router);
 app.use("/routerdb", userrouter);

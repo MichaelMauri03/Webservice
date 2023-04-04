@@ -1,8 +1,7 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../lib/db-connection');
+const {sequelize, Sequelize} = require('../lib/db-connection')
 
 const User = sequelize.define('users', {
-  Id: {
+  ID: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: false
@@ -23,7 +22,7 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  var: {
+  Role: {
     type: Sequelize.STRING,
     allowNull: false
   }
@@ -31,4 +30,6 @@ const User = sequelize.define('users', {
 
 sequelize.sync();
 
-module.exports = User;
+module.exports = {
+  User : User,
+}
