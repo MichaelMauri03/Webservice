@@ -6,14 +6,18 @@ const { User } = require('../models/user');
 router.use(bodyParser.json());
 
 router.get('/users', async (req, res) => {
-  const { email, password } = getEmailAndPasswordFromAuthorizationHeader(authorizationHeader);
-  const user = await User.findOne({ where: { username: email, password: password }});
-  if (!user) {
-    return res.json({ message: 'Utente inesistente' });
+  try{
+    const { email, password } = getEmailAndPasswordFromAuthorizationHeader(req.headers.authorization);
+    const user = await User.findOne({ where: { Email: email, password: password }});
+    if (!user) {
+      return res.json({ message: 'Utente inesistente' });
+    }
+    const users = await User.findAll();
+    res.json(users);
+  }catch(error){
+  console.log(error)
   }
-  const users = await User.findAll();
-  res.json(users);
-});
+  });
 
 router.post('/users', async (req, res) => {
   const { name, email } = req.body;
@@ -29,6 +33,6 @@ function getEmailAndPasswordFromAuthorizationHeader(authorizationHeader) {
   }
   const encodedCredentials = authorizationHeader.replace('Basic ', '');
   const decodedCredentials = Buffer.from(encodedCredentials, 'base64').toString('utf-8');
-  const [Email, password] = decodedCredentials.split(':');
-  return { Email, password };
+  const [email, password] = decodedCredentials.split(':');
+  return { email, password };
 }
