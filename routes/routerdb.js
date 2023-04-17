@@ -10,10 +10,16 @@ router.get('/users', async (req, res) => {
   res.json(users);
 });
 
-router.post('/users', async (req, res) => {
-  const { name, email } = req.body;
-  const user = await User.create({ name, email });
-  res.json(user);
+router.put('/users/create', async (req, res) => {
+  const user = await User.create(req.body);
+  res.sendStatus(201);
 });
-
+router.delete('/users/delete', async (req, res) => {
+  const user = await User.destroy({where: {ID : req.body.ID}});
+  res.sendStatus(200);
+});
+router.patch('/users/patch', async (req, res) => {
+  const user = await User.update(req.body,{where: {ID : req.body.ID}});
+  res.sendStatus(200);
+});
 module.exports = router;
