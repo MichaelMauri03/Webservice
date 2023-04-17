@@ -6,9 +6,18 @@ const { User } = require('../models/user');
 router.use(bodyParser.json());
 
 router.get('/users', async (req, res) => {
-  const users = await User.findAll();
-  res.json(users);
-});
+  try{
+    const { email, password } = getEmailAndPasswordFromAuthorizationHeader(req.headers.authorization);
+    const user = await User.findOne({ where: { Email: email, password: password }});
+    if (!user) {
+      return res.json({ message: 'Utente inesistente' });
+    }
+    const users = await User.findAll();
+    res.json(users);
+  }catch(error){
+  console.log(error)
+  }
+  });
 
 router.put('/users/create', async (req, res) => {
   const user = await User.create(req.body);
