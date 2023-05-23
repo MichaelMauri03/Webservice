@@ -1,4 +1,7 @@
 const app= require('./lib/appserver').app; 
+const swagger = require('./swagger.js');
+swagger(app);
+
 const port = 3000;
 
 app.listen(port, () => {

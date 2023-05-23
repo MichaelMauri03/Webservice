@@ -1,12 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const { User } = require('../models/user');
+const swaggerSetup = require('../swagger.js');
+swaggerSetup(router);
 
-router.use(bodyParser.json());
+/**
+ * @openapi
+ * tags:
+ *   name: Users
+ *   description: API per la gestione degli utenti
+ */
 
+/**
+ * @openapi
+ * /users:
+ *   get:
+ *     summary: Ottieni tutti gli utenti
+ *     tags: [Users]
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 router.get('/users', async (req, res) => {
-  try{
+  try {
     const { email, password } = getEmailAndPasswordFromAuthorizationHeader(req.headers.authorization);
     const user = await User.findOne({ where: { Email: email, password: password }});
     if (!user) {
@@ -14,22 +36,73 @@ router.get('/users', async (req, res) => {
     }
     const users = await User.findAll();
     res.json(users);
-  }catch(error){
-  console.log(error)
+  } catch (error) {
+    console.log(error);
   }
-  });
+});
 
+/**
+ * @openapi
+ * /users/create:
+ *   put:
+ *     summary: Crea un nuovo utente
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       '201':
+ *         description: Created
+ */
 router.put('/users/create', async (req, res) => {
   const user = await User.create(req.body);
   res.sendStatus(201);
 });
+
+/**
+ * @openapi
+ * /users/delete:
+ *   delete:
+ *     summary: Elimina un utente
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: ID
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       '200':
+ *         description: OK
+ */
 router.delete('/users/delete', async (req, res) => {
-  const user = await User.destroy({where: {ID : req.body.ID}});
+  const user = await User.destroy({ where: { ID: req.query.ID } });
   res.sendStatus(200);
 });
+
+/**
+ * @openapi
+ * /users/patch:
+ *   patch:
+ *     summary: Aggiorna un utente
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       '200':
+ *         description: OK
+ */
 router.patch('/users/patch', async (req, res) => {
-  const user = await User.update(req.body,{where: {ID : req.body.ID}});
+  const user = await User.update(req.body, { where: { ID: req.body.ID } });
   res.sendStatus(200);
 });
+
 module.exports = router;
 
