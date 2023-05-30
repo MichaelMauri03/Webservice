@@ -8,12 +8,21 @@ const options = {
       title: 'API Documentation',
       version: '1.0.0',
     },
+    securityDefinitions: {
+      basicAuth: {
+        type: 'basic',
+      },
+    },
+    security: [
+      {
+        basicAuth: [],
+      },
+    ],
   },
-  apis: ['/routes/routerdb.js'], // Imposta il percorso dei file che contengono le rotte Swagger
+  apis: ['./routes/*.js'], // Imposta il percorso dei file che contengono le rotte Swagger
 };
 
 const specs = swaggerJsDoc(options);
 
-module.exports = (app) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-};
+exports.options=options;
+exports.specs=specs;

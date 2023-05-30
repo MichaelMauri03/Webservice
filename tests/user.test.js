@@ -51,7 +51,8 @@ describe('Test del router degli utenti', () => {
 
     const response = await request(app)
       .patch('/users/patch')
-      .send({ ID: userId, ...updatedUserData });
+      .send({ ID: userId, updatedUserData });
 
     expect(response.status).toBe(200);
-  });
+  })
+  

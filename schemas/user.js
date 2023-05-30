@@ -6,7 +6,7 @@ const userSchema = {
   type: 'object',
   properties: {
     ID: { type: 'integer' },
-    Email: { type: 'string', format: 'email' },
+    Email: { type: 'string' },
     Name: { type: 'string' },
     Surname: { type: 'string' },
     password: { type: 'string' },
@@ -16,7 +16,10 @@ const userSchema = {
 };
 
 const validateUser = ajv.compile(userSchema);
-
+exports.userSchema=userSchema
+/*
 module.exports = {
   validateUser: validateUser
 };
+
+*/

@@ -2,18 +2,17 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models/user');
 const swaggerSetup = require('../swagger.js');
-swaggerSetup(router);
 
 /**
- * @openapi
+ * @swagger
  * tags:
  *   name: Users
  *   description: API per la gestione degli utenti
  */
 
 /**
- * @openapi
- * /users:
+ * @swagger
+ * /routerdb/users:
  *   get:
  *     summary: Ottieni tutti gli utenti
  *     tags: [Users]
@@ -25,7 +24,7 @@ swaggerSetup(router);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/user'
  */
 router.get('/users', async (req, res) => {
   try {
@@ -42,8 +41,8 @@ router.get('/users', async (req, res) => {
 });
 
 /**
- * @openapi
- * /users/create:
+ * @swagger
+ * /routerdb/users/create:
  *   put:
  *     summary: Crea un nuovo utente
  *     tags: [Users]
@@ -52,7 +51,7 @@ router.get('/users', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/user'
  *     responses:
  *       '201':
  *         description: Created
@@ -63,8 +62,8 @@ router.put('/users/create', async (req, res) => {
 });
 
 /**
- * @openapi
- * /users/delete:
+ * @swagger
+ * /routerdb/users/delete:
  *   delete:
  *     summary: Elimina un utente
  *     tags: [Users]
@@ -84,8 +83,8 @@ router.delete('/users/delete', async (req, res) => {
 });
 
 /**
- * @openapi
- * /users/patch:
+ * @swagger
+ * /routerdb/users/patch:
  *   patch:
  *     summary: Aggiorna un utente
  *     tags: [Users]
@@ -94,7 +93,7 @@ router.delete('/users/delete', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/user'
  *     responses:
  *       '200':
  *         description: OK
@@ -105,4 +104,14 @@ router.patch('/users/patch', async (req, res) => {
 });
 
 module.exports = router;
+
+function getEmailAndPasswordFromAuthorizationHeader(authorizationHeader) {
+  if (!authorizationHeader) {
+    return null;
+  }
+  const encodedCredentials = authorizationHeader.replace('Basic ', '');
+  const decodedCredentials = Buffer.from(encodedCredentials, 'base64').toString('utf-8');
+  const [Email, password] = decodedCredentials.split(':');
+  return { Email, password };
+}
 
