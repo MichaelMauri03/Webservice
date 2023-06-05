@@ -16,6 +16,7 @@ describe('Test del router degli utenti', () => {
 
   test('PUT /users/create crea un nuovo utente', async () => {
     const userData = {
+      ID: 13,
       Email: "alex@mail.com",
       Name: "Alex",
       Surname: "Grandi",
@@ -31,7 +32,7 @@ describe('Test del router degli utenti', () => {
   });
 
   test('DELETE /users/delete elimina un utente', async () => {
-    const userId = 2; 
+    const userId = 6; 
     const response = await request(app)
       .delete('/users/delete')
       .send({ ID: userId });
@@ -40,7 +41,7 @@ describe('Test del router degli utenti', () => {
   });
 
   test('PATCH /users/patch aggiorna un utente', async () => {
-    const userId = 2; 
+    const userId = 6; 
     const updatedUserData = {
     Email: "marco@mail.com",
     Name: "Marco",

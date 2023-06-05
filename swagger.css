@@ -1,0 +1,8 @@
+.swagger-ui .topbar .wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .swagger-ui .authorize__btn {
+    margin-left: 10px;
+  }

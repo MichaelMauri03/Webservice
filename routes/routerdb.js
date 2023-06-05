@@ -15,6 +15,8 @@ const swaggerSetup = require('../swagger.js');
  * /routerdb/users:
  *   get:
  *     summary: Ottieni tutti gli utenti
+ *     security:
+ *       - basicAuth: [] 
  *     tags: [Users]
  *     responses:
  *       '200':
@@ -28,11 +30,11 @@ const swaggerSetup = require('../swagger.js');
  */
 router.get('/users', async (req, res) => {
   try {
-    const { email, password } = getEmailAndPasswordFromAuthorizationHeader(req.headers.authorization);
-    const user = await User.findOne({ where: { Email: email, password: password }});
-    if (!user) {
-      return res.json({ message: 'Utente inesistente' });
-    }
+    //const { email, password } = getEmailAndPasswordFromAuthorizationHeader(req.headers.authorization);
+    //const user = await User.findOne({ where: { Email: email, password: password }});
+    //if (!user) {
+      //return res.json({ message: 'Utente inesistente' });
+    //}
     const users = await User.findAll();
     res.json(users);
   } catch (error) {

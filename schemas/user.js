@@ -12,7 +12,7 @@ const userSchema = {
     password: { type: 'string' },
     Role: { type: 'string' }
   },
-  required: ['Email', 'Name', 'Surname', 'password', 'Role']
+  required: ['ID','Email', 'Name', 'Surname', 'password', 'Role']
 };
 
 const validateUser = ajv.compile(userSchema);
